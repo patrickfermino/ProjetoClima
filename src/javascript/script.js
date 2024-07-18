@@ -1,46 +1,42 @@
-
-document.querySelector('#search').addEventListener('submit', async (event)=>{
+document.querySelector('#search').addEventListener('submit', async (event) => {
     event.preventDefault();
-    
+  
     const cityName = document.querySelector('#city_name').value;
+  
+    if (!cityName === 0) {
+      return showAlert("Você precisa digitar uma cidade");
+    }
+  
+    const apiKey = '4026b41927d70f0610c4ec4310378c96'; // Substitua pela sua chave de API
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(cityName)}&appid=${apiKey}&units=metric&lang=pt_br`;
+ 
 
-    if (!cityName){
-        return showAlert("Você precisa digitar uma cidade");
-    }       
-   
-        const apiKey = 'ef2177cfa077b801391d46ad9ef0b17e';
-        const apiUrl =  `https://api.openweathermap.org/data/2.5/weather?q=${encodeURI(cityName)}&appid={apiKey}$units=metric&Lang=pt_br`;
-        const results = await fetch(apiUrl);
-        const json = await results.json();
 
-        if(json.cod === 200){
-            showInfo({
-                city: json.name,
-                country: json.sys.country,
-                temp: json.main.temp,
-                temMax: json.main.temp_max,
-                temMain: json.main.temp_min
-             /*  description: json.weather[0].description,
-               tempIcon: json.weather[0].icon,
-               windSpeed: json.wind.speed,
-               humidity: json.main.humidity,*/
-            });
-            
-        }else {
-            showAlert('Não foi possível localicar...')
-        }
-    
-});
+  
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar o clima gatinho(a): ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data); // Aqui você pode processar os dados recebidos
+      // Atualize o DOM com os dados recebidos
+      document.getElementById('title').textContent = data.name;
+      document.getElementById('temp_value').innerHTML = `${data.main.temp} <sup>C°</sup>`;
+      document.getElementById('temp_description').textContent = data.weather[0].description;
+      document.getElementById('temp_max').innerHTML = `${data.main.temp_max} <sup>C°</sup>`;
+      document.getElementById('temp_min').innerHTML = `${data.main.temp_min} <sup>C°</sup>`;
+      document.getElementById('umidity').textContent = `${data.main.humidity}%`;
+      document.getElementById('vento').textContent = `${data.wind.speed} km/h`;
+      document.querySelector('#temp_img').setAttribute('src', `https://openweathermap.org/img/wn/${json.temp_img}@2x.png`)
 
-function showInfo(json){
-    showAlert('');
-
-    document.querySelector('#weather').classList.add('show');
-
-    document.querySelector('#title').innerHTML = `${json.city}`, `${json.country}`; 
-
-}
-
-function showAlert(msg){
+    } catch (error) {
+      console.error('Erro ao buscar os dados:', error);
+      showAlert('Erro ao buscar o clima gatinho(a)...');
+    }
+  });
+  
+  function showAlert(msg) {
     document.querySelector('#alert').innerHTML = msg;
-}
+  }
+ 

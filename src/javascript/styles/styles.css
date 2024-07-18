@@ -11,11 +11,11 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(#3b82f6, #4a7dff);
+    background: linear-gradient(#5c5c5c, #04050c);
  }
 
  #container {
-    background-color: #f0f8ff;
+    background-color: #c4c4c4;
     border-radius: 20px;
     padding: 18px;
     box-shadow: 5px 5px 5 5px rgba(0, 0, 0, 0.1);
@@ -25,7 +25,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    border: 1px solid #bdbdbd;
+    border: 1px solid #555454;
     border-radius: 10px;
     padding: 4px 12px;
  }
@@ -33,7 +33,7 @@
  #search input {
     border: none;
     background-color: transparent;
-    font-size:10px;
+    font-size:20px;
     width: 100%;
  }
 
